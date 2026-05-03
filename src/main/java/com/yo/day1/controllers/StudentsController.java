@@ -33,12 +33,16 @@ public class StudentsController {
     }
 
     @PostMapping
-    ResponseEntity<StudentResponse> create(StudentUpsertRequest req) {
+    ResponseEntity<StudentResponse> create(
+            @Valid @RequestBody StudentUpsertRequest req
+    ) {
         return ResponseEntity.ok(studentService.create(req));
     }
 
     @PutMapping(value = "/{id}")
-    ResponseEntity<StudentResponse> update(@PathVariable Long id, StudentUpsertRequest req) {
+    ResponseEntity<StudentResponse> update(
+            @PathVariable Long id, StudentUpsertRequest req
+    ) {
         return ResponseEntity.ok(studentService.update(id, req));
     }
 
