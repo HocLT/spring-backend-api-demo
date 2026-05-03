@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${YOEDU_DB_URL:jdbc:mysql://localhost:3306/yoedu_demo?createDatabaseIfNotExist=true}
+    username: ${YOEDU_DB_USERNAME:root}
+    password: ${YOEDU_DB_PASSWORD:ServBay.dev}
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
