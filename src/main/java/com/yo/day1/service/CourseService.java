@@ -8,6 +8,8 @@ public interface CourseService {
 
     List<Course> findAll();
 
+    List<Course> findByCourseActive();
+
     Optional<Course> findById(Long id);
 
     Course save(Course course);
