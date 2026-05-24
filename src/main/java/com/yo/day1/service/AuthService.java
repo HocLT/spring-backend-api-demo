@@ -2,6 +2,7 @@ package com.yo.day1.service;
 
 import com.yo.day1.common.exception.BadRequestException;
 import com.yo.day1.common.exception.NotFoundException;
+import com.yo.day1.domain.entity.User;
 import com.yo.day1.dto.auth.*;
 
 public interface AuthService {
@@ -14,4 +15,5 @@ public interface AuthService {
 
     CurrentUserResponse me(String username) throws BadRequestException, NotFoundException;
 
+    User findActiveUserByUsername(String username) throws BadRequestException, NotFoundException;
 }
