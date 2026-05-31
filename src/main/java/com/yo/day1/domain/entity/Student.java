@@ -44,8 +44,7 @@ public class Student extends AuditableEntity {
     @Column(nullable = false, length = 20)
     private StudentStatus status = StudentStatus.ACTIVE;
 
-//    @Column(name = "latest_score", precision = 5, scale = 2)
-    @Column(name = "latest_score")
+    @Column(name = "latest_score", columnDefinition = "decimal(5,2)")
     private float latestScore = 0;
 
     @Column(length = 255)

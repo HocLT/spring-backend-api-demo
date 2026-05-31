@@ -38,7 +38,8 @@ public class BillingController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Missing or invalid JWT token"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Insufficient permission")
     })
-    public ApiResponse<InvoiceResponse> createInvoice(@Valid @RequestBody InvoiceCreateRequest request) throws NotFoundException {
+    public ApiResponse<InvoiceResponse> createInvoice(@Valid @RequestBody InvoiceCreateRequest request)
+            throws NotFoundException {
         return ApiResponse.success("Invoice created", billingService.createInvoice(request));
     }
 
@@ -51,14 +52,16 @@ public class BillingController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Insufficient permission"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Student not found")
     })
-    public ApiResponse<List<InvoiceResponse>> findInvoicesByStudent(@Parameter(description = "Student identifier", example = "1") @PathVariable Long studentId, @Parameter(hidden = true) Principal principal) throws BadRequestException, NotFoundException {
+    public ApiResponse<List<InvoiceResponse>> findInvoicesByStudent(
+            @Parameter(description = "Student identifier", example = "1") @PathVariable Long studentId,
+            @Parameter(hidden = true) Principal principal) throws BadRequestException, NotFoundException {
         return ApiResponse.success(billingService.findInvoicesByStudent(studentId, principal.getName()));
     }
 
     @PostMapping("/payments")
     @PreAuthorize("hasAnyRole('ADMIN','CASHIER')")
-    public ApiResponse<PaymentResponse> createPayment(@Valid @RequestBody PaymentCreateRequest request, Principal principal) throws NotFoundException, BadRequestException {
+    public ApiResponse<PaymentResponse> createPayment(@Valid @RequestBody PaymentCreateRequest request,
+            Principal principal) throws NotFoundException, BadRequestException {
         return ApiResponse.success("Payment created", billingService.createPayment(request, principal.getName()));
     }
 }
-

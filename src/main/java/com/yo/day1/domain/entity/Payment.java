@@ -21,7 +21,7 @@ public class Payment extends AuditableEntity {
     @Column(name = "payment_code", nullable = false, unique = true, length = 30)
     private String paymentCode;
 
-    @Column(name = "paid_amount", nullable = false)
+    @Column(name = "paid_amount", nullable = false, columnDefinition = "decimal(12,2)")
     private float paidAmount;
 
     @Enumerated(EnumType.STRING)
@@ -38,4 +38,3 @@ public class Payment extends AuditableEntity {
     @Column(length = 255)
     private String note;
 }
-

@@ -29,19 +29,19 @@ public class TuitionInvoice extends AuditableEntity {
     @Column(name = "billing_month", nullable = false)
     private LocalDate billingMonth;
 
-    @Column(name = "original_amount", nullable = false)
+    @Column(name = "original_amount", nullable = false, columnDefinition = "decimal(12,2)")
     private float originalAmount;
 
-    @Column(name = "discount_amount", nullable = false)
+    @Column(name = "discount_amount", nullable = false, columnDefinition = "decimal(12,2)")
     private float discountAmount = 0;
 
-    @Column(name = "final_amount", nullable = false)
+    @Column(name = "final_amount", nullable = false, columnDefinition = "decimal(12,2)")
     private float finalAmount;
 
-    @Column(name = "amount_paid", nullable = false)
+    @Column(name = "amount_paid", nullable = false, columnDefinition = "decimal(12,2)")
     private float amountPaid = 0;
 
-    @Column(name = "balance_amount", nullable = false)
+    @Column(name = "balance_amount", nullable = false, columnDefinition = "decimal(12,2)")
     private float balanceAmount = 0;
 
     @Enumerated(EnumType.STRING)
