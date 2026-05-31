@@ -23,4 +23,6 @@ public interface StudentService {
     Student getStudentForParent(Long studentId, Long parentId) throws NotFoundException;
 
     Student getStudent(Long id) throws NotFoundException;
+
+    List<StudentResponse> findByParentId(Long parentId);
 }
