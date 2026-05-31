@@ -44,8 +44,9 @@ public class Student extends AuditableEntity {
     @Column(nullable = false, length = 20)
     private StudentStatus status = StudentStatus.ACTIVE;
 
-    @Column(name = "latest_score", precision = 5, scale = 2)
-    private BigDecimal latestScore = BigDecimal.ZERO;
+//    @Column(name = "latest_score", precision = 5, scale = 2)
+    @Column(name = "latest_score")
+    private float latestScore = 0;
 
     @Column(length = 255)
     private String note;
