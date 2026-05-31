@@ -5,6 +5,8 @@ import com.yo.day1.common.exception.BadRequestException;
 import com.yo.day1.common.exception.NotFoundException;
 import com.yo.day1.dto.billing.InvoiceCreateRequest;
 import com.yo.day1.dto.billing.InvoiceResponse;
+import com.yo.day1.dto.billing.PaymentCreateRequest;
+import com.yo.day1.dto.billing.PaymentResponse;
 import com.yo.day1.service.BillingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -51,6 +53,12 @@ public class BillingController {
     })
     public ApiResponse<List<InvoiceResponse>> findInvoicesByStudent(@Parameter(description = "Student identifier", example = "1") @PathVariable Long studentId, @Parameter(hidden = true) Principal principal) throws BadRequestException, NotFoundException {
         return ApiResponse.success(billingService.findInvoicesByStudent(studentId, principal.getName()));
+    }
+
+    @PostMapping("/payments")
+    @PreAuthorize("hasAnyRole('ADMIN','CASHIER')")
+    public ApiResponse<PaymentResponse> createPayment(@Valid @RequestBody PaymentCreateRequest request, Principal principal) throws NotFoundException, BadRequestException {
+        return ApiResponse.success("Payment created", billingService.createPayment(request, principal.getName()));
     }
 }
 

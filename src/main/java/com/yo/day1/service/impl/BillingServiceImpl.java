@@ -2,6 +2,7 @@ package com.yo.day1.service.impl;
 
 import com.yo.day1.common.exception.BadRequestException;
 import com.yo.day1.common.exception.NotFoundException;
+import com.yo.day1.domain.entity.Payment;
 import com.yo.day1.domain.entity.Promotion;
 import com.yo.day1.domain.entity.TuitionInvoice;
 import com.yo.day1.domain.entity.User;
@@ -9,12 +10,12 @@ import com.yo.day1.domain.enums.DiscountType;
 import com.yo.day1.domain.enums.InvoiceStatus;
 import com.yo.day1.dto.billing.InvoiceCreateRequest;
 import com.yo.day1.dto.billing.InvoiceResponse;
+import com.yo.day1.dto.billing.PaymentCreateRequest;
+import com.yo.day1.dto.billing.PaymentResponse;
+import com.yo.day1.repository.PaymentRepository;
 import com.yo.day1.repository.PromotionRepository;
 import com.yo.day1.repository.TuitionInvoiceRepository;
-import com.yo.day1.service.AuthService;
-import com.yo.day1.service.BillingService;
-import com.yo.day1.service.CourseClassService;
-import com.yo.day1.service.StudentService;
+import com.yo.day1.service.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,8 @@ public class BillingServiceImpl implements BillingService {
     private final CourseClassService courseClassService;
     private final AuthService authService;
     private final ModelMapper mapper;
+    private final PaymentRepository paymentRepository;
+    private final EnrollmentService enrollmentService;
 
     @Transactional
     public InvoiceResponse createInvoice(InvoiceCreateRequest request) throws NotFoundException {
@@ -96,4 +99,56 @@ public class BillingServiceImpl implements BillingService {
         return result;
     }
 
+    @Transactional
+    public PaymentResponse createPayment(PaymentCreateRequest request, String username) throws NotFoundException, BadRequestException {
+        TuitionInvoice invoice = tuitionInvoiceRepository.findById(request.getInvoiceId()).orElseThrow(() -> new NotFoundException("Invoice not found: " + request.getInvoiceId()));
+        if (request.getPaidAmount() <= 0) {
+            throw new BadRequestException("Paid amount must be greater than 0");
+        }
+
+        User cashier = authService.findActiveUserByUsername(username);
+        Payment payment = new Payment();
+        payment.setInvoice(invoice);
+        payment.setPaymentCode(request.getPaymentCode());
+        payment.setPaidAmount(request.getPaidAmount());
+        payment.setPaymentMethod(request.getPaymentMethod());
+        payment.setPaidAt(request.getPaidAt());
+        payment.setCashierUser(cashier);
+        payment.setNote(request.getNote());
+        Payment savedPayment = paymentRepository.save(payment);
+
+        float newAmountPaid = invoice.getAmountPaid() + request.getPaidAmount();
+        float balance = invoice.getFinalAmount() - newAmountPaid;
+        invoice.setAmountPaid(newAmountPaid);
+        invoice.setBalanceAmount(balance);
+        invoice.setStatus(calculateInvoiceStatus(balance, newAmountPaid));
+        tuitionInvoiceRepository.save(invoice);
+
+        return toPaymentResponse(savedPayment);
+    }
+
+    private InvoiceStatus calculateInvoiceStatus(float balance, float amountPaid) {
+        if (balance < 0) {
+            return InvoiceStatus.OVERPAID;
+        }
+        if (balance == 0) {
+            return InvoiceStatus.PAID;
+        }
+        if (amountPaid  > 0) {
+            return InvoiceStatus.PARTIAL;
+        }
+        return InvoiceStatus.UNPAID;
+    }
+
+    private PaymentResponse toPaymentResponse(Payment item) {
+        PaymentResponse response  = mapper.map(item, PaymentResponse.class);
+        response.setInvoiceId(item.getInvoice().getId());
+        response.setInvoiceCode(item.getInvoice().getInvoiceCode());
+        response.setPaymentMethod(item.getPaymentMethod().toString());
+        if (item.getCashierUser() != null) {
+            response.setCashierUserId(item.getCashierUser().getId());
+            response.setCashierUsername(item.getCashierUser().getUsername());
+        }
+        return response;
+    }
 }

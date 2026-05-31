@@ -14,13 +14,19 @@ import java.time.LocalDateTime;
 public class PaymentCreateRequest {
     @NotNull
     private Long invoiceId;
+
     @NotBlank
     private String paymentCode;
+
     @NotNull @DecimalMin("0.01")
     private float paidAmount;
+
     @NotNull
     private PaymentMethod paymentMethod;
+
     @NotNull
     private LocalDateTime paidAt;
-    @Size(max = 255) String note;
+
+    @Size(max = 255)
+    private String note;
 }

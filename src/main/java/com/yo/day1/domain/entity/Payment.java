@@ -1,6 +1,7 @@
 package com.yo.day1.domain.entity;
 
 import com.yo.day1.domain.AuditableEntity;
+import com.yo.day1.domain.enums.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

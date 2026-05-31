@@ -4,6 +4,8 @@ import com.yo.day1.common.exception.BadRequestException;
 import com.yo.day1.common.exception.NotFoundException;
 import com.yo.day1.dto.billing.InvoiceCreateRequest;
 import com.yo.day1.dto.billing.InvoiceResponse;
+import com.yo.day1.dto.billing.PaymentCreateRequest;
+import com.yo.day1.dto.billing.PaymentResponse;
 
 import java.util.List;
 
@@ -13,5 +15,5 @@ public interface BillingService {
 
     List<InvoiceResponse> findInvoicesByStudent(Long studentId, String username) throws BadRequestException, NotFoundException;
 
-
+    PaymentResponse createPayment(PaymentCreateRequest request, String username) throws NotFoundException, BadRequestException;
 }
