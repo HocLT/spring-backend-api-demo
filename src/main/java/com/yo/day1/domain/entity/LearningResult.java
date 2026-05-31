@@ -11,8 +11,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
-@Table(name = "learning_results",
-        uniqueConstraints = @UniqueConstraint(name = "uq_learning_result", columnNames = {
+@Table(name = "learning_results", uniqueConstraints = @UniqueConstraint(name = "uq_learning_result", columnNames = {
         "student_id", "course_class_id", "result_month" }))
 public class LearningResult extends AuditableEntity {
 
@@ -27,11 +26,10 @@ public class LearningResult extends AuditableEntity {
     @Column(name = "result_month", nullable = false)
     private LocalDate resultMonth;
 
-//    @Column(precision = 5, scale = 2)
+    @Column(columnDefinition = "decimal(5,2)")
     private float score;
 
-    @Lob
-    @Column(name = "teacher_comment")
+    @Column(name = "teacher_comment", columnDefinition = "text")
     private String teacherComment;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Table(name = "course_classes")
 public class CourseClass extends AuditableEntity {
 
-    @Column(columnDefinition = "varchar(20)")
+    @Column(name = "class_code", columnDefinition = "varchar(20)")
     private String codeCode;
 
     @Column(columnDefinition = "varchar(100)")
@@ -43,7 +43,7 @@ public class CourseClass extends AuditableEntity {
 
     private int maxStudents;
 
-    @Column(columnDefinition = "decimal")
+    @Column(name = "tuition_fee", columnDefinition = "decimal(12,2)")
     private double tuitionFee;
 
     @Enumerated(EnumType.STRING)

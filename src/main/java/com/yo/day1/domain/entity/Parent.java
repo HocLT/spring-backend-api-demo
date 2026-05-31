@@ -22,10 +22,9 @@ public class Parent extends AuditableEntity {
     @Column(length = 255)
     private String address;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 10)
+    @Transient
     private Gender gender = Gender.OTHER;
 
-    @Column(length = 50)
+    @Transient
     private String relationship;
 }
