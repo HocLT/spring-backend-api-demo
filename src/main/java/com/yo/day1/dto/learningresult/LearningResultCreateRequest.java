@@ -15,7 +15,7 @@ public class LearningResultCreateRequest {
     Long courseClassId;
     @NotNull
     LocalDate resultMonth;
-    @DecimalMin("0.0")
-    BigDecimal score;
+//    @DecimalMin("0.0")
+    float score;
     String teacherComment;
 }

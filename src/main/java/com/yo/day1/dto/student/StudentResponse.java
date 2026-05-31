@@ -37,7 +37,7 @@ public class StudentResponse {
 
     private StudentStatus status = StudentStatus.ACTIVE;
 
-    private BigDecimal latestScore = BigDecimal.ZERO;
+    private float latestScore = 0;
 
     private String note;
 

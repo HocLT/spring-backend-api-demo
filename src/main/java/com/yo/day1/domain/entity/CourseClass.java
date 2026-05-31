@@ -19,19 +19,19 @@ public class CourseClass extends AuditableEntity {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "course_id", nullable = false)
+    @JoinColumn(name = "course_id")
     private Course course;
 
     @ManyToOne
-    @JoinColumn(name = "room_id", nullable = false)
+    @JoinColumn(name = "room_id")
     private Room room;
 
     @ManyToOne
-    @JoinColumn(name = "schedule_slot_id", nullable = false)
+    @JoinColumn(name = "schedule_slot_id")
     private ScheduleSlot slot;
 
     @ManyToOne
-    @JoinColumn(name = "main_teacher_id", nullable = false)
+    @JoinColumn(name = "main_teacher_id")
     private Teacher mainTeacher;
 
     @ManyToOne
@@ -43,7 +43,7 @@ public class CourseClass extends AuditableEntity {
 
     private int maxStudents;
 
-    @Column(columnDefinition = "decimal", precision = 12, scale = 2)
+    @Column(columnDefinition = "decimal")
     private double tuitionFee;
 
     @Enumerated(EnumType.STRING)
